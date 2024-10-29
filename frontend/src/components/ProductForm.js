@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify'; // Import toast from react-toastify
 
 function ProductForm({ product = {}, fetchProducts, resetSelectedProduct }) {
   const [name, setName] = useState(product?.name || '');
@@ -21,14 +22,17 @@ function ProductForm({ product = {}, fetchProducts, resetSelectedProduct }) {
       if (product && product._id) {
         await axios.put(`http://localhost:5001/api/products/${product._id}`, productData);
         resetSelectedProduct(); // Reset selected product after updating
+        toast.success("Product updated successfully");
       } else {
         await axios.post('http://localhost:5001/api/products', productData);
+        toast.success("Product added successfully");
       }
       fetchProducts();
       setName('');
       setPrice('');
       setDescription('');
     } catch (error) {
+      toast.error("Error saving product");
       console.error("Error saving product:", error);
     }
   };

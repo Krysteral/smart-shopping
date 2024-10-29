@@ -1,12 +1,13 @@
 import React from 'react';
-import ProductList from './components/ProductList';
-import './App.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ProductList from './components/ProductList'; // Import your ProductList component
 
 function App() {
   return (
     <div className="App">
-      <h1>Smart Shopping</h1>
-      <ProductList />
+      <ToastContainer />
+      <ProductList /> {/* Display ProductList component */}
     </div>
   );
 }
