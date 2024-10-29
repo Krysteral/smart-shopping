@@ -29,15 +29,19 @@ function ProductList() {
   };
 
   const handleEdit = (product) => {
-    setSelectedProduct(product);  // Pass the selected product to the form
+    setSelectedProduct(product); // Set product to edit mode
+  };
+
+  const resetSelectedProduct = () => {
+    setSelectedProduct(null); // Reset after update to allow new addition
   };
 
   return (
     <div>
       <h2>Product List Component Loaded</h2>
-      <ul>
+      <ul className="product-list">
         {products.map((product) => (
-          <li key={product._id}>
+          <li key={product._id} className="product-item">
             <h3>{product.name}</h3>
             <p>Price: ${product.price}</p>
             <p>Description: {product.description}</p>
@@ -46,7 +50,12 @@ function ProductList() {
           </li>
         ))}
       </ul>
-      <ProductForm product={selectedProduct} fetchProducts={fetchProducts} />
+      <ProductForm 
+        product={selectedProduct} 
+        fetchProducts={fetchProducts} 
+        resetSelectedProduct={resetSelectedProduct} 
+        className="product-form" 
+      />
     </div>
   );
 }

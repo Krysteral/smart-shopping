@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function ProductForm({ product = {}, fetchProducts }) {
-  // Initialize the state with default values to avoid null errors
+function ProductForm({ product = {}, fetchProducts, resetSelectedProduct }) {
   const [name, setName] = useState(product?.name || '');
   const [price, setPrice] = useState(product?.price || '');
   const [description, setDescription] = useState(product?.description || '');
 
   useEffect(() => {
-    // Update the form fields if a product is selected for editing
     setName(product?.name || '');
     setPrice(product?.price || '');
     setDescription(product?.description || '');
@@ -22,11 +20,12 @@ function ProductForm({ product = {}, fetchProducts }) {
     try {
       if (product && product._id) {
         await axios.put(`http://localhost:5001/api/products/${product._id}`, productData);
+        resetSelectedProduct(); // Reset selected product after updating
       } else {
         await axios.post('http://localhost:5001/api/products', productData);
       }
       fetchProducts();
-      setName('');  // Clear the form after submission
+      setName('');
       setPrice('');
       setDescription('');
     } catch (error) {
@@ -48,7 +47,8 @@ function ProductForm({ product = {}, fetchProducts }) {
         value={price} 
         onChange={(e) => setPrice(e.target.value)} 
         placeholder="Price" 
-        required 
+        required
+        step="0.01"
       />
       <textarea 
         value={description} 
