@@ -5,7 +5,7 @@ const router = express.Router();
 // GET all stores
 router.get('/', async (req, res) => {
   try {
-    const stores = await Store.find().populate('products'); // Populate product details
+    const stores = await Store.find();
     res.json(stores);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -20,6 +20,32 @@ router.post('/', async (req, res) => {
     res.status(201).json(newStore);
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+});
+
+// UPDATE a store by ID
+router.put('/:id', async (req, res) => {
+  try {
+    const updatedStore = await Store.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedStore) {
+      return res.status(404).json({ message: "Store not found" });
+    }
+    res.json(updatedStore);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// DELETE a store by ID
+router.delete('/:id', async (req, res) => {
+  try {
+    const deletedStore = await Store.findByIdAndDelete(req.params.id);
+    if (!deletedStore) {
+      return res.status(404).json({ message: "Store not found" });
+    }
+    res.json({ message: "Store deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
