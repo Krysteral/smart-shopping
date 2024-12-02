@@ -67,4 +67,5 @@ function ProductForm({ product = {}, fetchProducts, resetSelectedProduct }) {
   );
 }
 
+
 export default ProductForm;
