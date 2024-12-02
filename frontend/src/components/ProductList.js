@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import ProductForm from './ProductForm';
 
@@ -6,25 +6,22 @@ function ProductList() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  // Use the backend URL from the environment variable
-  const API_URL = process.env.REACT_APP_BACKEND_URL;
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/products`);
+      const response = await axios.get('http://localhost:5001/api/products');
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
-  };
+  }, []); // No dependencies, so it stays the same across renders
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]); // Add fetchProducts as a dependency
 
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(`${API_URL}/api/products/${id}`);
+      await axios.delete(`http://localhost:5001/api/products/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -32,11 +29,11 @@ function ProductList() {
   };
 
   const handleEdit = (product) => {
-    setSelectedProduct(product); // Set product to edit mode
+    setSelectedProduct(product);
   };
 
   const resetSelectedProduct = () => {
-    setSelectedProduct(null); // Reset after update to allow new addition
+    setSelectedProduct(null);
   };
 
   return (
@@ -53,11 +50,11 @@ function ProductList() {
           </li>
         ))}
       </ul>
-      <ProductForm 
-        product={selectedProduct} 
-        fetchProducts={fetchProducts} 
-        resetSelectedProduct={resetSelectedProduct} 
-        className="product-form" 
+      <ProductForm
+        product={selectedProduct}
+        fetchProducts={fetchProducts}
+        resetSelectedProduct={resetSelectedProduct}
+        className="product-form"
       />
     </div>
   );
