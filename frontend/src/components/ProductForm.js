@@ -7,6 +7,9 @@ function ProductForm({ product = {}, fetchProducts, resetSelectedProduct }) {
   const [price, setPrice] = useState(product?.price || '');
   const [description, setDescription] = useState(product?.description || '');
 
+  // Use the backend URL from the environment variable
+  const API_URL = process.env.REACT_APP_BACKEND_URL;
+
   useEffect(() => {
     setName(product?.name || '');
     setPrice(product?.price || '');
@@ -20,11 +23,11 @@ function ProductForm({ product = {}, fetchProducts, resetSelectedProduct }) {
 
     try {
       if (product && product._id) {
-        await axios.put(`http://localhost:5001/api/products/${product._id}`, productData);
+        await axios.put(`${API_URL}/api/products/${product._id}`, productData);
         resetSelectedProduct(); // Reset selected product after updating
         toast.success("Product updated successfully");
       } else {
-        await axios.post('http://localhost:5001/api/products', productData);
+        await axios.post(`${API_URL}/api/products`, productData);
         toast.success("Product added successfully");
       }
       fetchProducts();

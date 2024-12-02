@@ -6,13 +6,16 @@ function ProductList() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  // Use the backend URL from the environment variable
+  const API_URL = process.env.REACT_APP_BACKEND_URL;
+
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/products');
+      const response = await axios.get(`${API_URL}/api/products`);
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -21,7 +24,7 @@ function ProductList() {
 
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:5001/api/products/${id}`);
+      await axios.delete(`${API_URL}/api/products/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
