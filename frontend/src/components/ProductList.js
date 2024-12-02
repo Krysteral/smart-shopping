@@ -1,27 +1,29 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProductForm from './ProductForm';
+
+const API_URL = process.env.REACT_APP_API_URL; // Environment variable for the backend URL
 
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const fetchProducts = useCallback(async () => {
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/products');
+      const response = await axios.get(`${API_URL}/api/products`); // Use API_URL here
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
-  }, []); // No dependencies, so it stays the same across renders
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]); // Add fetchProducts as a dependency
+  };
 
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:5001/api/products/${id}`);
+      await axios.delete(`${API_URL}/api/products/${id}`); // Use API_URL here
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
