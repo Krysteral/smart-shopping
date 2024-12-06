@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getProducts, deleteProduct } from '../api/productApi';
 import ProductForm from './ProductForm';
-
-const API_URL = process.env.REACT_APP_API_URL; // Environment variable for the backend URL
 
 function ProductList() {
   const [products, setProducts] = useState([]);
@@ -14,16 +12,16 @@ function ProductList() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/products`); // Use API_URL here
-      setProducts(response.data);
+      const data = await getProducts();
+      setProducts(data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
-  const deleteProduct = async (id) => {
+  const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_URL}/api/products/${id}`); // Use API_URL here
+      await deleteProduct(id);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -40,24 +38,19 @@ function ProductList() {
 
   return (
     <div>
-      <h2>Product List Component Loaded</h2>
-      <ul className="product-list">
+      <h2>Product List</h2>
+      <ul>
         {products.map((product) => (
-          <li key={product._id} className="product-item">
+          <li key={product._id}>
             <h3>{product.name}</h3>
             <p>Price: ${product.price}</p>
-            <p>Description: {product.description}</p>
+            <p>{product.description}</p>
             <button onClick={() => handleEdit(product)}>Edit</button>
-            <button onClick={() => deleteProduct(product._id)}>Delete</button>
+            <button onClick={() => handleDelete(product._id)}>Delete</button>
           </li>
         ))}
       </ul>
-      <ProductForm
-        product={selectedProduct}
-        fetchProducts={fetchProducts}
-        resetSelectedProduct={resetSelectedProduct}
-        className="product-form"
-      />
+      <ProductForm product={selectedProduct} fetchProducts={fetchProducts} resetSelectedProduct={resetSelectedProduct} />
     </div>
   );
 }

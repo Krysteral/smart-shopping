@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST a new store
+// POST a new store (Admin only)
 router.post('/', async (req, res) => {
   const store = new Store(req.body);
   try {
@@ -23,27 +23,14 @@ router.post('/', async (req, res) => {
   }
 });
 
-// UPDATE a store by ID
-router.put('/:id', async (req, res) => {
-  try {
-    const updatedStore = await Store.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedStore) {
-      return res.status(404).json({ message: "Store not found" });
-    }
-    res.json(updatedStore);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// DELETE a store by ID
+// DELETE a store (Admin only)
 router.delete('/:id', async (req, res) => {
   try {
     const deletedStore = await Store.findByIdAndDelete(req.params.id);
     if (!deletedStore) {
-      return res.status(404).json({ message: "Store not found" });
+      return res.status(404).json({ message: 'Store not found' });
     }
-    res.json({ message: "Store deleted successfully" });
+    res.json({ message: 'Store deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

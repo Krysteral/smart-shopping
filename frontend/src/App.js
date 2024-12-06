@@ -5,9 +5,10 @@ import ProductList from './components/ProductList'; // Import your ProductList c
 
 function App() {
   return (
-    <div className="App">
-      <ToastContainer />
-      <ProductList /> {/* Display ProductList component */}
+    <div>
+      <h1>Smart Shopping</h1>
+      <ProductList />
+      <ShoppingListList />
     </div>
   );
 }
