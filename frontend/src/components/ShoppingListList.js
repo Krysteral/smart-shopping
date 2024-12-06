@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getShoppingLists, deleteShoppingList } from '../api/shoppingListApi';
-import ShoppingListForm from './ShoppingListForm';
+import { getShoppingLists } from '../api/shoppingListApi'; // Assume an API file for shopping list functions
 
 function ShoppingListList() {
   const [shoppingLists, setShoppingLists] = useState([]);
@@ -18,15 +17,6 @@ function ShoppingListList() {
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await deleteShoppingList(id);
-      fetchShoppingLists();
-    } catch (error) {
-      console.error("Error deleting shopping list:", error);
-    }
-  };
-
   return (
     <div>
       <h2>Shopping Lists</h2>
@@ -34,11 +24,14 @@ function ShoppingListList() {
         {shoppingLists.map((list) => (
           <li key={list._id}>
             <h3>{list.name}</h3>
-            <button onClick={() => handleDelete(list._id)}>Delete</button>
+            <ul>
+              {list.items.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
           </li>
         ))}
       </ul>
-      <ShoppingListForm fetchShoppingLists={fetchShoppingLists} />
     </div>
   );
 }
