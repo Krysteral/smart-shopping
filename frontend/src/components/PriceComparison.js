@@ -18,7 +18,7 @@ function PriceComparison({ selectedProducts, stores }) {
       console.log('Sending products to compare:', selectedProducts);
 
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/compare-prices`,
+        `${process.env.REACT_BACKEND_API_URL}/api/compare-prices`,
         { products: selectedProducts }
       );
 
