@@ -19,7 +19,7 @@ function ShoppingListList() {
 
   return (
     <div>
-      <h2>Shopping Lists</h2>
+      <h2>Shopping Lisat Lists</h2>
       <ul>
         {shoppingLists.map((list) => (
           <li key={list._id}>
