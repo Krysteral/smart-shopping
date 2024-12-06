@@ -1,4 +1,6 @@
 # Local Netlify folder
 .netlify
-# .env file contains credentials
+# Ignore env files
 .env
+.env.local
+.env.production
