@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: smart-shopping-backend
+    env: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm run deploy && npm start
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: REACT_APP_API_URL
+        sync: false 
