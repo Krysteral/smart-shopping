@@ -1,36 +1,38 @@
 const express = require('express');
-const Store = require('../models/Store');
 const router = express.Router();
+const Store = require('../models/Store');
 
-// GET all stores
+// Get stores by location (city or zip)
+router.get('/nearby/:location', async (req, res) => {
+  try {
+    const location = req.params.location;
+    console.log('Searching for location:', location); // Debug log
+    
+    const stores = await Store.find({
+      $or: [
+        { city: new RegExp(location, 'i') },
+        { zip: location }
+      ]
+    });
+    
+    console.log('Found stores:', stores); // Debug log
+    
+    if (stores.length === 0) {
+      return res.status(404).json({ message: 'No stores found in this location' });
+    }
+    
+    res.json(stores);
+  } catch (error) {
+    console.error('Store search error:', error);
+    res.status(500).json({ message: 'Error searching stores' });
+  }
+});
+
+// Add a route to get all stores (for debugging)
 router.get('/', async (req, res) => {
   try {
     const stores = await Store.find();
     res.json(stores);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// POST a new store (Admin only)
-router.post('/', async (req, res) => {
-  const store = new Store(req.body);
-  try {
-    const newStore = await store.save();
-    res.status(201).json(newStore);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// DELETE a store (Admin only)
-router.delete('/:id', async (req, res) => {
-  try {
-    const deletedStore = await Store.findByIdAndDelete(req.params.id);
-    if (!deletedStore) {
-      return res.status(404).json({ message: 'Store not found' });
-    }
-    res.json({ message: 'Store deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

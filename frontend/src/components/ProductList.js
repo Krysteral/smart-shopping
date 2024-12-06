@@ -1,83 +1,92 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-function ShoppingList() {
-  const [shoppingLists, setShoppingLists] = useState([]);
-  const [listName, setListName] = useState('');
-  const [items, setItems] = useState('');
-  const [selectedList, setSelectedList] = useState(null);
+function ProductList() {
+  const [products, setProducts] = useState([]);
+  const [newProduct, setNewProduct] = useState({
+    name: '',
+    price: '',
+    description: '',
+  });
 
   useEffect(() => {
-    fetchShoppingLists();
+    fetchProducts();
   }, []);
 
-  const fetchShoppingLists = async () => {
+  const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/shopping-lists`);
-      setShoppingLists(response.data);
+      const response = await axios.get(`${API_URL}/api/products`);
+      setProducts(response.data);
     } catch (error) {
-      console.error("Error fetching shopping lists:", error);
+      console.error('Error fetching products:', error);
     }
   };
 
-  const handleCreateList = async () => {
+  const handleInputChange = (e) => {
+    setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
+  };
+
+  const addProduct = async () => {
     try {
-      const newList = {
-        name: listName,
-        items: items.split(',').map((item) => item.trim()),
-      };
-      await axios.post(`${API_URL}/api/shopping-lists`, newList);
-      fetchShoppingLists();
-      setListName('');
-      setItems('');
+      await axios.post(`${API_URL}/api/products`, newProduct);
+      fetchProducts();
+      setNewProduct({ name: '', price: '', description: '' });
     } catch (error) {
-      console.error("Error creating shopping list:", error);
+      console.error('Error adding product:', error);
     }
   };
 
-  const handleDeleteList = async (id) => {
+  const deleteProduct = async (id) => {
     try {
-      await axios.delete(`${API_URL}/api/shopping-lists/${id}`);
-      fetchShoppingLists();
+      await axios.delete(`${API_URL}/api/products/${id}`);
+      fetchProducts(); // Refresh the product list
     } catch (error) {
-      console.error("Error deleting shopping list:", error);
+      console.error('Error deleting product:', error);
     }
   };
+  
 
   return (
     <div>
-      <h2>Shopping Lists</h2>
+      <h2>Product List</h2>
       <ul>
-        {shoppingLists.map((list) => (
-          <li key={list._id}>
-            <strong>{list.name}</strong>
-            <p>Items: {list.items.join(', ')}</p>
-            <button onClick={() => setSelectedList(list)}>Edit</button>
-            <button onClick={() => handleDeleteList(list._id)}>Delete</button>
+        {products.map((product) => (
+          <li key={product._id}>
+            <strong>{product.name}</strong> - ${product.price}
+            <p>{product.description}</p>
+            <button onClick={() => deleteProduct(product._id)}>Delete</button>
           </li>
         ))}
       </ul>
       <div>
-        <h3>{selectedList ? 'Edit List' : 'Create New List'}</h3>
+        <h3>Add New Product</h3>
         <input
           type="text"
-          value={listName}
-          onChange={(e) => setListName(e.target.value)}
-          placeholder="List Name"
+          name="name"
+          placeholder="Product Name"
+          value={newProduct.name}
+          onChange={handleInputChange}
         />
-        <textarea
-          value={items}
-          onChange={(e) => setItems(e.target.value)}
-          placeholder="Comma-separated items (e.g., milk, bread, eggs)"
+        <input
+          type="text"
+          name="price"
+          placeholder="Price"
+          value={newProduct.price}
+          onChange={handleInputChange}
         />
-        <button onClick={handleCreateList}>
-          {selectedList ? 'Update List' : 'Create List'}
-        </button>
+        <input
+          type="text"
+          name="description"
+          placeholder="Description"
+          value={newProduct.description}
+          onChange={handleInputChange}
+        />
+        <button onClick={addProduct}>Add Product</button>
       </div>
     </div>
   );
 }
 
-export default ShoppingList;
+export default ProductList;
