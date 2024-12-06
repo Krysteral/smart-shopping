@@ -3,7 +3,7 @@ services:
     name: smart-shopping-backend
     env: node
     buildCommand: cd backend && npm install
-    startCommand: cd backend && npm run deploy && npm start
+    startCommand: cd backend && node scripts/deploy.js
     envVars:
       - key: MONGODB_URI
         sync: false
