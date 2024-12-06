@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
-function NearbyStores({ location }) {
-  const [stores, setStores] = useState([]);
+function NearbyStores() {
+  const [query, setQuery] = useState('supermarket nearby');
 
-  useEffect(() => {
-    const fetchStores = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5001/api/stores/nearby?lat=${location.lat}&lng=${location.lng}`);
-        setStores(response.data);
-      } catch (error) {
-        console.error('Error fetching nearby stores:', error);
-      }
-    };
-
-    fetchStores();
-  }, [location]);
+  const handleQueryChange = (event) => {
+    setQuery(event.target.value);
+  };
 
   return (
     <div>
       <h2>Nearby Stores</h2>
-      <ul>
-        {stores.map((store) => (
-          <li key={store._id}>{store.name}</li>
-        ))}
-      </ul>
+      <input
+        type="text"
+        placeholder="Enter your location.."
+        value={query}
+        onChange={handleQueryChange}
+      />
+      <iframe
+        title="Nearby Supermarkets Map"
+        width="600"
+        height="450"
+        style={{ border: 0 }}
+        loading="lazy"
+        allowFullScreen
+        src={`https://www.google.com/maps/embed/v1/search?q=supermarket%20nearby%20${encodeURIComponent(query)}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+      ></iframe>
     </div>
   );
 }
