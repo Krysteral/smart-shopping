@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createProduct, updateProduct } from '../api/productApi';
+import { addProduct, updateProduct } from '../api/productApi';
 import { toast } from 'react-toastify';
 
 function ProductForm({ product, fetchProducts, resetSelectedProduct }) {
@@ -25,7 +25,7 @@ function ProductForm({ product, fetchProducts, resetSelectedProduct }) {
         await updateProduct(product._id, productData);
         toast.success("Product updated successfully");
       } else {
-        await createProduct(productData);
+        await addProduct(productData);
         toast.success("Product added successfully");
       }
       fetchProducts();
