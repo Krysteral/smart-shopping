@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ProductList from './components/ProductList'; // Import ProductList component
-import ShoppingListList from './components/ShoppingListList'; // Import ShoppingListList component
+import ProductList from './components/ProductList';
+import ShoppingList from './components/ShoppingList';
+import NearbyStores from './components/NearbyStores';
+import ProductMatching from './components/ProductMatching';
 
 function App() {
+  const [selectedShoppingList, setSelectedShoppingList] = useState(null);
+
   return (
     <div>
       <h1>Smart Shopping</h1>
-      <ToastContainer /> {/* Toast notifications */}
-      <ProductList /> {/* Displays and manages products */}
-      <ShoppingListList /> {/* Displays and manages shopping lists */}
+      <ToastContainer />
+      <NearbyStores />
+      <ShoppingList setSelectedShoppingList={setSelectedShoppingList} />
+      {selectedShoppingList && <ProductMatching shoppingList={selectedShoppingList} />}
+      <ProductList />
     </div>
   );
 }
