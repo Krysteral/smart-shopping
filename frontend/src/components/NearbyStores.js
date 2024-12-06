@@ -12,7 +12,7 @@ function NearbyStores() {
       <h2>Nearby Stores</h2>
       <input
         type="text"
-        placeholder="Search for stores..."
+        placeholder="Enter your location.."
         value={query}
         onChange={handleQueryChange}
       />
@@ -23,7 +23,7 @@ function NearbyStores() {
         style={{ border: 0 }}
         loading="lazy"
         allowFullScreen
-        src={`https://www.google.com/maps/embed/v1/search?q=${encodeURIComponent(query)}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+        src={`https://www.google.com/maps/embed/v1/search?q=supermarket%20nearby%20${supermarket+nearby+encodeURIComponent(query)}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
       ></iframe>
     </div>
   );
