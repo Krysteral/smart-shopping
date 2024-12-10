@@ -1,6 +1,0 @@
-[
-    { "name": "Apple", "description": "Fresh red apples", "price": 1.2, "category": "Fruits" },
-    { "name": "Banana", "description": "Ripe yellow bananas", "price": 0.5, "category": "Fruits" },
-    { "name": "Milk", "description": "1 gallon of milk", "price": 3.5, "category": "Dairy" }
-  ]
-  
