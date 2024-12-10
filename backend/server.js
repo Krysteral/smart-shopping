@@ -6,6 +6,7 @@ const Store = require('./models/Store');
 const Product = require('./models/Product');
 const productRoutes = require('./routes/productRoutes');
 const storeRoutes = require('./routes/storeRoutes');
+const priceRoutes = require('./routes/priceRoutes');
 
 const app = express();
 
