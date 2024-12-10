@@ -1,0 +1,11 @@
+[
+    {
+      "name": "Weekly Groceries",
+      "items": [
+        { "productId": "64d2f7a78cce3a124a4b", "quantity": 5 },
+        { "productId": "64d2f7a78cce3a124a4c", "quantity": 10 }
+      ],
+      "location": "Oxford, MS"
+    }
+  ]
+  
