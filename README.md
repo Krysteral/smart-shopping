@@ -38,10 +38,10 @@ A web application that helps users find the best prices for their shopping lists
 3. Configure environment variables:
    - Create a `.env` file in the backend directory
    - Add the following variables:
-     ```
+   ```env
     MONGODB_URI=your_mongodb_connection_string
     PORT=10000
-     ```
+   ```
 
 4. Seed the database:
    ```bash
