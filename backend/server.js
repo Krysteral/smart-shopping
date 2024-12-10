@@ -5,6 +5,7 @@ const cors = require('cors');
 const Store = require('./models/Store');
 const Product = require('./models/Product');
 const productRoutes = require('./routes/productRoutes');
+const storeRoutes = require('./routes/storeRoutes');
 
 const app = express();
 
